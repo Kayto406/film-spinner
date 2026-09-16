@@ -1,9 +1,9 @@
 /* Genie's Film Spinner - offline shell + poster cache */
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL = `spinner-shell-${VERSION}`;
 const POSTERS = `spinner-posters-${VERSION}`;
 const SHELL_FILES = [
-  "./", "./index.html", "./manifest.webmanifest",
+  "./", "./index.html", "./films.json", "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png",
   "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png",
 ];

@@ -1,0 +1,43 @@
+name: Refresh watchlist
+
+on:
+  schedule:
+    # 06:17 UTC daily. Offset from the hour because GitHub delays jobs
+    # scheduled on the hour, when everyone else's crons fire too.
+    - cron: "17 6 * * *"
+  workflow_dispatch:        # gives a "Run workflow" button for an instant refresh
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-watchlist
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pull the latest watchlist
+        run: python3 tools/refresh.py
+
+      - name: Commit if the watchlist changed
+        run: |
+          if [[ -z "$(git status --porcelain films.json)" ]]; then
+            echo "No change to films.json - nothing to commit."
+            exit 0
+          fi
+          count=$(python3 -c "import json;print(json.load(open('films.json'))['count'])")
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add films.json
+          git commit -m "Refresh watchlist: ${count} films ($(date -u +%Y-%m-%d))"
+          git push
+          echo "Pushed ${count} films; GitHub Pages will redeploy."
