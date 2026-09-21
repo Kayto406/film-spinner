@@ -36,6 +36,13 @@ Metacritic covers 403 of the 572 films — the rest genuinely have no Metacritic
 show a dash rather than a guessed score. Each run also re-checks 40 of the missing ones at
 random, in case an entry has since appeared.
 
+## Build your own
+
+[PROMPT.md](PROMPT.md) is a ready-to-use prompt for building this from scratch against a
+different Letterboxd account. It assumes no GitHub account and starts with environment setup.
+Use it with Claude Code rather than the claude.ai website, since it needs to run scripts and
+push to GitHub.
+
 ## Layout
 
     index.html              the app; fetches films.json at runtime
